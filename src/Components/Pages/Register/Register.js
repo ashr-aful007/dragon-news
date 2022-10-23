@@ -1,11 +1,14 @@
 import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../Context/Authprovider/Authprovider';
 
 function Register() {
-     const {createUser} = useContext(AuthContext)
+     const {createUser, updateUserProfile, varifyEmail} = useContext(AuthContext)
      const [error, setError] = useState()
+     const [accepted, setAccepted] = useState()
      const handleSubmit = event =>{
           event.preventDefault();
           const from = event.target;
@@ -19,11 +22,45 @@ function Register() {
                console.log(user);
                setError('')
                from.reset();
+               handleUserProfile(name, photoURL)
+               handleEmailVarification()
+               toast.success('please chack your email and varify ')
           })
           .catch(error =>{
               setError(error.message)        
           })
      }
+
+const handleUserProfile = (name, photoURL) =>{
+        const profile = {
+          displayName: name,
+          photoURL: photoURL
+        }
+           updateUserProfile(profile)
+           .then(() => {
+
+           })
+           .catch(error =>{
+            console.error(error)
+           })
+}
+
+
+
+     const handleAccepted = event =>{
+      setAccepted(event.target.checked)
+     }
+
+     const handleEmailVarification = () =>{
+      varifyEmail()
+      .then( () =>{
+
+      })
+      .catch(error =>{
+        console.log(error)
+      })
+     }
+
 
   return (
     <div>   
@@ -46,7 +83,15 @@ function Register() {
         <Form.Label>Photo URL</Form.Label>
         <Form.Control name='photoURL' type="text" placeholder="Photo URL" />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Form.Group className="mb-3">
+          <Form.Check
+            type="checkbox"
+            id="disabledFieldsetCheck"
+            onClick={handleAccepted}
+           label= {<>Accept <Link to='/trams'>Trems and conditions</Link></>} 
+          />
+        </Form.Group>
+      <Button variant="primary" type="submit" disabled={!accepted}>
         Regester
       </Button>
       <Form.Text className="text-danger">
