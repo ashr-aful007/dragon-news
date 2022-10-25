@@ -6,6 +6,7 @@ import Login from "../Pages/Login/Login";
 import News from "../Pages/News/News";
 import Register from "../Pages/Register/Register";
 import TramsAndCondision from "../Pages/TramsAndCondision/TramsAndCondision";
+import Profile from "../Profile/Profile";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 export const routes = createBrowserRouter([
@@ -16,17 +17,17 @@ export const routes = createBrowserRouter([
                {
                     path: '/',
                     element: <Home></Home>,
-                    loader: () => fetch(`http://localhost:5000/news`)
+                    loader: () => fetch(`https://dragon-news-server-self-three.vercel.app/news`)
                },
                {
                     path: '/category/:id',
                     element: <Catagory></Catagory>,
-                    loader: ({params}) => fetch(`http://localhost:5000/category/${params.id}`)
+                    loader: ({params}) => fetch(`https://dragon-news-server-self-three.vercel.app/category/${params.id}`)
                },
                {
                     path: '/news/:id',
                     element: <PrivateRoute><News></News></PrivateRoute>,
-                    loader: ({params}) => fetch(`http://localhost:5000/news/${params.id}`)
+                    loader: ({params}) => fetch(`https://dragon-news-server-self-three.vercel.app/news/${params.id}`)
                     
                },
                {
@@ -40,6 +41,10 @@ export const routes = createBrowserRouter([
                {
                     path: '/trams',
                     element: <TramsAndCondision></TramsAndCondision>
+               },
+               {
+                    path: '/profile',
+                    element: <PrivateRoute><Profile></Profile></PrivateRoute>
                }
           ]
      }
